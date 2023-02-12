@@ -1,0 +1,95 @@
+[gd_scene load_steps=14 format=3 uid="uid://cnidtsc0b236f"]
+
+[ext_resource type="PackedScene" uid="uid://ceetj2e47l7pk" path="res://textures/fire_base.gltf" id="1_hvali"]
+[ext_resource type="Texture2D" uid="uid://c672xs63ptf0g" path="res://textures/PNG (Transparent)/fire_02.png" id="2_n86xy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w8i6y"]
+transparency = 1
+blend_mode = 1
+shading_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("2_n86xy")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_xkell"]
+offsets = PackedFloat32Array(0, 0.443038, 1)
+colors = PackedColorArray(0.921569, 0.65098, 0, 1, 0.956863, 0.137255, 0.0862745, 1, 0.184314, 0.0509804, 0.0196078, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7nu3x"]
+gradient = SubResource("Gradient_xkell")
+
+[sub_resource type="Curve" id="Curve_4x6r5"]
+_data = [Vector2(0, 0.321637), 0.0, 0.0, 0, 0, Vector2(0.442935, 0.935673), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_pn1vg"]
+curve = SubResource("Curve_4x6r5")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ygt2o"]
+emission_shape = 1
+emission_sphere_radius = 2.0
+direction = Vector3(0, -1, 0)
+spread = 90.0
+gravity = Vector3(0, 5, 0)
+linear_accel_max = 5.0
+angle_max = 360.0
+scale_min = 1.2
+scale_max = 1.2
+scale_curve = SubResource("CurveTexture_pn1vg")
+color_ramp = SubResource("GradientTexture1D_7nu3x")
+
+[sub_resource type="QuadMesh" id="QuadMesh_7q0ac"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_6l5i8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pv85j"]
+albedo_color = Color(0.0196078, 0.0196078, 0.0196078, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_gn72k"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4vrwp"]
+albedo_color = Color(0.141176, 0.141176, 0.141176, 1)
+
+[node name="Calcifer" type="Node3D"]
+
+[node name="fire_base" parent="." instance=ExtResource("1_hvali")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.053149, 0, 0.032975)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.46983, 0)
+material_override = SubResource("StandardMaterial3D_w8i6y")
+amount = 600
+process_material = SubResource("ParticleProcessMaterial_ygt2o")
+draw_pass_1 = SubResource("QuadMesh_7q0ac")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.142992, 0, -0.989724, 0, 1, 0, 0.989724, 0, 0.142992, -12.6126, 1.62823, 0.796515)
+current = true
+
+[node name="LeftEye" type="CSGCombiner3D" parent="."]
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="LeftEye"]
+transform = Transform3D(0.41857, 0, 0, 0, 0.880415, 0, 0, 0, 0.880415, -1.42605, 2.77234, -1.13228)
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="LeftEye"]
+transform = Transform3D(-0.325938, 0, 0, 0, 0.195436, 0, 0, 0, -0.210565, -1.50383, 2.74384, -1.06473)
+mesh = SubResource("SphereMesh_6l5i8")
+material = SubResource("StandardMaterial3D_pv85j")
+
+[node name="RightEye" type="CSGCombiner3D" parent="."]
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="RightEye"]
+transform = Transform3D(0.41857, 0, 0, 0, 0.880415, 0, 0, 0, 0.880415, -1.42605, 2.77234, 0.59265)
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="RightEye"]
+transform = Transform3D(-0.325938, 0, 0, 0, 0.195436, 0, 0, 0, -0.210565, -1.50383, 2.74384, 0.660196)
+mesh = SubResource("SphereMesh_6l5i8")
+material = SubResource("StandardMaterial3D_pv85j")
+
+[node name="Lip" type="CSGMesh3D" parent="."]
+transform = Transform3D(0.00267056, -0.104322, 0, 0.217955, 0.00127824, 0, 0, 0, 1, -1.44161, 0.679523, -0.214162)
+mesh = SubResource("CylinderMesh_gn72k")
+material = SubResource("StandardMaterial3D_4vrwp")
